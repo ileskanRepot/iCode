@@ -1,0 +1,22 @@
+Rivin pituus on hard capatty. Se ei saa ylittää 100 merkkiä. Samaten rivien määrä se ei saa ylittää 500 riviä
+
+Int muuttujan tekeminen:
+new int <muuttujan nimi (pitää olla luku)> <muuttujan arvo (pitää olla luku)>
+
+Int muuttujan muuttaminen:
+	muuttaminen toiseen lukuun:
+	- update int <muuttujan nimi (pitää olla luku)> <Uusi lukuarvo>
+	muuttaminen toiseen muuttujaan:
+	- update int <muuttujan nimi (pitää olla luku)> int <muuttujan nimi (pitää olla luku)>
+	muuttaminen luvun ja muuttujan summaksi:
+	- update int <muuttujan nimi (pitää olla luku)> int <muuttujan nimi (pitää olla luku)> + <luku arvo (pitää olla luku)>
+	muuttaminen muuttujan ja muuttujan summaksi:
+	- update int <muuttujan nimi (pitää olla luku)> int <muuttujan nimi (pitää olla luku)> + int <muuttujan nimi (pitää olla luku)>
+
+Printtaaminen
+	printtaa ilman uutta riviä:
+	- print "Teksiä"
+	printtaa uuden rivin kanssa:
+	- printl "Teksiä"
+	printtaa int muuttuja:
+	- print int <muuttujan nimi (pitää olla luku)>
