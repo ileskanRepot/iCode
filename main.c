@@ -248,6 +248,36 @@ int main(int argc, char **argv)
 						}
 						updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), num1 + num2);
 					}
+					else if (strEq(nThWord(lines[i],5), "-")){
+						if (strEq(nThWord(lines[i],6), "int")){
+							num2 = fromIntArray(intValue, intPosition, strToInt(nThWord(lines[i],7)));
+						}
+						else
+						{
+							num2 = strToInt(nThWord(lines[i],6));
+						}
+						updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), num1 - num2);
+					}
+					else if (strEq(nThWord(lines[i],5), "*")){
+						if (strEq(nThWord(lines[i],6), "int")){
+							num2 = fromIntArray(intValue, intPosition, strToInt(nThWord(lines[i],7)));
+						}
+						else
+						{
+							num2 = strToInt(nThWord(lines[i],6));
+						}
+						updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), num1 * num2);
+					}
+					else if (strEq(nThWord(lines[i],5), "/")){
+						if (strEq(nThWord(lines[i],6), "int")){
+							num2 = fromIntArray(intValue, intPosition, strToInt(nThWord(lines[i],7)));
+						}
+						else
+						{
+							num2 = strToInt(nThWord(lines[i],6));
+						}
+						updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), num1 / num2);
+					}
 // printf("(%d %d)\n", num1,num2);
 				}
 				//else if (strEq(t, ))
