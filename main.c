@@ -313,6 +313,23 @@ int main(int argc, char **argv)
 					i--;
 				}
 			}
+			else
+			{
+				if (strToInt(secondWord) == 0)
+				{
+					int howManyIf = 1;
+					i++;
+
+					while ((i < lineCount) && (howManyIf > 0))
+					{
+						if (strEq(nThWord(lines[i],0),"if")){howManyIf++;};
+						if (strEq(nThWord(lines[i],0),"endif")){howManyIf--;};
+						i++;
+					}
+					i--;
+				}
+
+			}
 		}
 		else if (strEq(firstWord, "endif")){
 		}
