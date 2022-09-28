@@ -1,5 +1,11 @@
 new int 1 3
-new int 2 5
+new int 2 1
+new int 3 0
 
-update int 1 int 2 + 1
-printl int 1
+if int 3
+	if int 2
+		printl "Moi1"
+		printl "Moi2"
+	endif
+	printl "Hei2"
+endif

@@ -109,7 +109,7 @@ char* nThWord(unsigned char *originalWord, int word)
 	int count = 0;
 	int isQuote = 0;
 		
-	parsedWord = (char *)malloc(100*sizeof(char));
+	parsedWord = (char *)malloc(sizeof(char));
 	
 	for (int i = 0;originalWord[i] != '\0';i++)
 	{
@@ -136,6 +136,82 @@ char* nThWord(unsigned char *originalWord, int word)
 		}
 	}
 	return "";
+}
+
+void print(char *firstWord, char *line, int *intValue, int *intPosition){
+	char *secondWord = nThWord(line,1);
+	if (secondWord[0] == '"'){
+		printf("%s", secondWord);
+	}
+	else if (strEq(secondWord, "int")){
+		printf("%d", fromIntArray(intValue, intPosition, strToInt(nThWord(line,2)) ));
+
+	}
+
+	if (strEq(firstWord, "printl"))
+	{
+		printf("\n");
+	}
+}
+
+void update(char *line, int *intValue, int *intPosition){
+	char *secondWord = nThWord(line,1);
+	if (strEq(secondWord, "int"))
+	{
+		char *fifthWord = nThWord(line,4);
+		char *fourthWord = nThWord(line,3);
+		char *thirdWord = nThWord(line,2);
+			
+		if (strEq(fifthWord, ""))
+		{
+			updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), strToInt(fourthWord));
+		}
+		else if (strEq(fourthWord, "int"))
+		{
+			int num1 = fromIntArray(intValue, intPosition, strToInt(nThWord(line,4)));
+			int num2 = 0;
+			if (strEq(nThWord(line,5), "+")){
+				if (strEq(nThWord(line,6), "int")){
+					num2 = fromIntArray(intValue, intPosition, strToInt(nThWord(line,7)));
+				}
+				else
+				{
+					num2 = strToInt(nThWord(line,6));
+				}
+				updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), num1 + num2);
+			}
+			else if (strEq(nThWord(line,5), "-")){
+				if (strEq(nThWord(line,6), "int")){
+					num2 = fromIntArray(intValue, intPosition, strToInt(nThWord(line,7)));
+				}
+				else
+				{
+					num2 = strToInt(nThWord(line,6));
+				}
+				updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), num1 - num2);
+			}
+			else if (strEq(nThWord(line,5), "*")){
+		if (strEq(nThWord(line,6), "int")){
+			num2 = fromIntArray(intValue, intPosition, strToInt(nThWord(line,7)));
+		}
+		else
+		{
+			num2 = strToInt(nThWord(line,6));
+		}
+				updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), num1 * num2);
+			}
+			else if (strEq(nThWord(line,5), "/")){
+				if (strEq(nThWord(line,6), "int")){
+					num2 = fromIntArray(intValue, intPosition, strToInt(nThWord(line,7)));
+				}
+				else
+				{
+					num2 = strToInt(nThWord(line,6));
+				}
+				updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), num1 / num2);
+			}
+		}
+	}
 }
 
 int main(int argc, char **argv)
@@ -193,19 +269,7 @@ int main(int argc, char **argv)
 		// Printing
 		if (strEq(firstWord, "print") || strEq(firstWord, "printl"))
 		{
-			char *secondWord = nThWord(lines[i],1);
-			if (secondWord[0] == '"'){
-				printf("%s", secondWord);
-			}
-			else if (strEq(secondWord, "int")){
-				printf("%d", fromIntArray(intValue, intPosition, strToInt(nThWord(lines[i],2)) ));
-
-			}
-
-			if (strEq(firstWord, "printl"))
-			{
-				printf("\n");
-			}
+			print(firstWord, lines[i], intValue, intPosition);
 		}
 
 		// Making new variable
@@ -223,65 +287,38 @@ int main(int argc, char **argv)
 		// Updating old variables
 		else if (strEq(firstWord, "update"))
 		{
+			update(lines[i], intValue, intPosition);
+
+		}
+
+		// If statemenet
+		else if (strEq(firstWord, "if"))
+		{
 			char *secondWord = nThWord(lines[i],1);
+			char *thirdWord = nThWord(lines[i],2);
 			if (strEq(secondWord, "int"))
 			{
-				char *fifthWord = nThWord(lines[i],4);
-				char *fourthWord = nThWord(lines[i],3);
-				char *thirdWord = nThWord(lines[i],2);
-					
-				if (strEq(fifthWord, ""))
+				if (fromIntArray(intValue, intPosition, strToInt(thirdWord)) == 0)
 				{
-					updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), strToInt(fourthWord));
+					int howManyIf = 1;
+					i++;
+
+					while ((i < lineCount) && (howManyIf > 0))
+					{
+						if (strEq(nThWord(lines[i],0),"if")){howManyIf++;};
+						if (strEq(nThWord(lines[i],0),"endif")){howManyIf--;};
+						//printf("i: %d, %d, %d, %s\n",i,lineCount,howManyIf,lines[i]);
+						i++;
+					}
+					i--;
 				}
-				else if (strEq(fourthWord, "int"))
-				{
-					int num1 = fromIntArray(intValue, intPosition, strToInt(nThWord(lines[i],4)));
-					int num2 = 0;
-					if (strEq(nThWord(lines[i],5), "+")){
-						if (strEq(nThWord(lines[i],6), "int")){
-							num2 = fromIntArray(intValue, intPosition, strToInt(nThWord(lines[i],7)));
-						}
-						else
-						{
-							num2 = strToInt(nThWord(lines[i],6));
-						}
-						updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), num1 + num2);
-					}
-					else if (strEq(nThWord(lines[i],5), "-")){
-						if (strEq(nThWord(lines[i],6), "int")){
-							num2 = fromIntArray(intValue, intPosition, strToInt(nThWord(lines[i],7)));
-						}
-						else
-						{
-							num2 = strToInt(nThWord(lines[i],6));
-						}
-						updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), num1 - num2);
-					}
-					else if (strEq(nThWord(lines[i],5), "*")){
-						if (strEq(nThWord(lines[i],6), "int")){
-							num2 = fromIntArray(intValue, intPosition, strToInt(nThWord(lines[i],7)));
-						}
-						else
-						{
-							num2 = strToInt(nThWord(lines[i],6));
-						}
-						updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), num1 * num2);
-					}
-					else if (strEq(nThWord(lines[i],5), "/")){
-						if (strEq(nThWord(lines[i],6), "int")){
-							num2 = fromIntArray(intValue, intPosition, strToInt(nThWord(lines[i],7)));
-						}
-						else
-						{
-							num2 = strToInt(nThWord(lines[i],6));
-						}
-						updateIntArrayValue(intValue, intPosition, strToInt(thirdWord), num1 / num2);
-					}
-// printf("(%d %d)\n", num1,num2);
-				}
-				//else if (strEq(t, ))
 			}
+		}
+		else if (strEq(firstWord, "endif")){
+		}
+		else
+		{
+			printf("Unknown keyword: \"%s\" at line %d\n", firstWord, i+1);
 		}
 	}
 }
